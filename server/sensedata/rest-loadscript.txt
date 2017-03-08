@@ -1,0 +1,114 @@
+SET ThousandSep=',';
+SET DecimalSep='.';
+SET MoneyThousandSep=',';
+SET MoneyDecimalSep='.';
+SET MoneyFormat='$#,##0.00;($#,##0.00)';
+SET TimeFormat='h:mm:ss TT';
+SET DateFormat='M/D/YYYY';
+SET TimestampFormat='M/D/YYYY h:mm:ss[.fff] TT';
+SET FirstWeekDay=6;
+SET BrokenWeeks=1;
+SET ReferenceDay=0;
+SET FirstMonthOfYear=1;
+SET CollationLocale='en-US';
+SET MonthNames='Jan;Feb;Mar;Apr;May;Jun;Jul;Aug;Sep;Oct;Nov;Dec';
+SET LongMonthNames='January;February;March;April;May;June;July;August;September;October;November;December';
+SET DayNames='Mon;Tue;Wed;Thu;Fri;Sat;Sun';
+SET LongDayNames='Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday';
+
+
+LIB CONNECT TO '{{connectorName}}';
+
+RestConnectorMasterTable:
+SQL SELECT
+  "user_id",
+  "average_speed",
+  "average_speed_rva",
+  "calories",
+  "country_id",
+  "distance",
+  "duration",
+  "duration_per_km",
+  "duration_rva",
+  "elevation_gain",
+  "elevation_loss",
+  "end_time",
+  "latitude",
+  "longitude",
+  "pulse_avg",
+  "pulse_max",
+  "sport_type_id",
+  "start_time",
+  "start_time_date",
+  "start_time_hour",
+  "start_time_month",
+  "start_time_week",
+  "start_time_weekday",
+  "start_time_year",
+  "subjective_feeling_id",
+  "surface_id",
+  "time_per_km",
+  "time_per_km_Bucket",
+  "TimeOfDay",
+  "weather_condition_id"
+FROM CSV (header on, delimiter ",", quote """") "CSV_source";
+
+[CSV_source]:
+LOAD  [user_id] AS [user_id],
+  [average_speed] AS [average_speed],
+  [average_speed_rva] AS [average_speed_rva],
+  [calories] AS [calories],
+  [country_id] AS [country_id],
+  [distance] AS [distance],
+  [duration] AS [duration],
+  [duration_per_km] AS [duration_per_km],
+  [duration_rva] AS [duration_rva],
+  [elevation_gain] AS [elevation_gain],
+  [elevation_loss] AS [elevation_loss],
+  [end_time] AS [end_time],
+  [latitude] AS [latitude],
+  [longitude] AS [longitude],
+    GeoMakePoint([latitude], [longitude]) AS [longitude_latitude],
+  [pulse_avg] AS [pulse_avg],
+  [pulse_max] AS [pulse_max],
+  [sport_type_id] AS [sport_type_id],
+    Date(Date#(left(start_time,10), 'DD.MM.YYYY')) as StartDate,
+    Month( Date(Date#(left(start_time,10), 'DD.MM.YYYY'))) as StartMonth,
+  Year( Date(Date#(left(start_time,10), 'DD.MM.YYYY'))) as StartYear,
+  Weekday( Date(Date#(left(start_time,10), 'DD.MM.YYYY'))) as StartWeekDay,
+  [start_time] AS [start_time],
+  [start_time_date] AS [start_time_date],
+  [start_time_hour] AS [start_time_hour],
+  [start_time_month] AS [start_time_month],
+  [start_time_week] AS [start_time_week],
+  [start_time_weekday] AS [start_time_weekday],
+  [start_time_year] AS [start_time_year],
+  [subjective_feeling_id] AS [subjective_feeling_id],
+  [surface_id] AS [surface_id],
+  [time_per_km] AS [time_per_km],
+  [time_per_km_Bucket] AS [time_per_km_Bucket],
+  [TimeOfDay] AS [TimeOfDay],
+  [weather_condition_id] AS [weather_condition_id]
+RESIDENT RestConnectorMasterTable;
+
+
+DROP TABLE RestConnectorMasterTable;
+
+
+[autoCalendar]:
+  DECLARE FIELD DEFINITION Tagged ('$date')
+FIELDS
+  Dual(Year($1), YearStart($1)) AS [Year] Tagged ('$axis', '$year'),
+  Dual('Q'&Num(Ceil(Num(Month($1))/3)),Num(Ceil(NUM(Month($1))/3),00)) AS [Quarter] Tagged ('$quarter', '$cyclic'),
+  Dual(Year($1)&'-Q'&Num(Ceil(Num(Month($1))/3)),QuarterStart($1)) AS [YearQuarter] Tagged ('$yearquarter', '$qualified'),
+  Dual('Q'&Num(Ceil(Num(Month($1))/3)),QuarterStart($1)) AS [_YearQuarter] Tagged ('$yearquarter', '$hidden', '$simplified'),
+  Month($1) AS [Month] Tagged ('$month', '$cyclic'),
+  Dual(Year($1)&'-'&Month($1), monthstart($1)) AS [YearMonth] Tagged ('$axis', '$yearmonth', '$qualified'),
+  Dual(Month($1), monthstart($1)) AS [_YearMonth] Tagged ('$axis', '$yearmonth', '$simplified', '$hidden'),
+  Dual('W'&Num(Week($1),00), Num(Week($1),00)) AS [Week] Tagged ('$weeknumber', '$cyclic'),
+  Date(Floor($1)) AS [Date] Tagged ('$axis', '$date', '$qualified'),
+  Date(Floor($1), 'D') AS [_Date] Tagged ('$axis', '$date', '$hidden', '$simplified');
+
+DERIVE FIELDS FROM FIELDS [StartDate] USING [autoCalendar] ;
+
+exit script;

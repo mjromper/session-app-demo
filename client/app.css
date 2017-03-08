@@ -1,0 +1,51 @@
+/* app css stylesheet */
+
+body {
+  background: #f0f0f0;
+}
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li + li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.main.container {
+    margin-top: 70px;
+    margin-bottom: 70px;
+}
+
+.mychart {
+    padding: 0px 10px 10px 10px;
+    background: #ffffff;
+}
+
+.cg-busy-default-sign {
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+}
+.cg-busy-default-text {
+    min-height: 20px;
+}
+.cg-busy-default-spinner {
+    left: 18px;
+}

@@ -1,0 +1,41 @@
+<h2>Hello {{user.name}} <button ng-click="create();" class="btn btn-primary btn-sm">Create Session App <i class="fa fa-check" aria-hidden="true"></i></button></h2>
+
+
+<div id="filters"></div>
+<div id="reload"></div>
+
+<div cg-busy="{promise:creatingProm,message:'Wait, creating...'}"></div>
+
+<div ng-if="sessionApp" id="visualizations">
+    <h3>These are your stats</h3>
+
+
+    <div class="row">
+        <div class="col-md-12">
+           <div id="CurrentSelections" style="width: 100%; height: 50px;"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+           <div id="userkpi" style="width: 100%; height: 150px;" class="mychart"></div>
+        </div>
+        <div class="col-md-3">
+            <div id="calorieskpi" style="width: 100%; height: 150px;" class="mychart"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="timeofday" style="width: 100%; height: 300px;" class="mychart"></div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div id="calories2" style="width: 100%; height: 300px;" class="mychart"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="calories" style="width: 100%; height: 300px;" class="mychart"></div>
+        </div>
+    </div>
+</div>
