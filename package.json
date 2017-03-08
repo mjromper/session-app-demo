@@ -7,18 +7,16 @@
     "bluebird": "^3.4.0",
     "body-parser": "^1.15.1",
     "cookie-parser": "^1.4.3",
-    "d3": "^3.5.17",
     "enigma.js": "^1.0.1",
     "express": "^4.13.4",
     "fs-extra": "^0.30.0",
-    "jquery": "^2.2.4",
-    "less-middleware": "^2.1.0",
     "memory-cache": "^0.1.5",
-    "pug": "^2.0.0-alpha8",
     "request-promise": "^3.0.0",
     "q": "1.4.1",
-    "ws": "^0.7.2",
-    "qlik-auth": ">= 1.1.0"
+    "ws": "^0.7.2"
+  },
+  "engines": {
+      "node": ">=0.10.x"
   },
   "devDependencies": {},
   "scripts": {

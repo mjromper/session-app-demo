@@ -2,13 +2,11 @@ var express = require('express');
 var https = require('https');
 var path = require('path');
 var bodyParser = require('body-parser');
-var lessMiddleware = require('less-middleware');
 var Promise = require('bluebird');
 var cookieParser = require('cookie-parser');
 var cache = require('memory-cache');
 
 var certificates = require('../server/utils/certificates');
-var genuuid = require('../server/utils/generateId')
 var config = require('../config');
 
 module.exports = {
@@ -24,25 +22,16 @@ module.exports = {
             var router = express.Router();
 
             /**
-             * View engine
-             */
-            app.set('view engine', 'pug');
-            app.set('views', path.join(__dirname, 'views'));
-
-            /**
              * Middleware
              */
-            app.use(lessMiddleware(path.join(__dirname, 'public')));
             app.use(cookieParser());
             app.use(bodyParser.json());
 
             /**
              * Static Resources
              */
-            app.use('/client', express.static(path.join(__dirname, '../client')));
-            app.use(express.static(path.join(__dirname, 'public')));
-            app.use('/jquery', express.static(path.join(__dirname, '../node_modules/jquery')));
-            app.use('/d3', express.static(path.join(__dirname, '../node_modules/d3')));
+            app.use(express.static( path.resolve(__dirname, '../client')));
+
 
             /**
              * Routes
@@ -75,7 +64,7 @@ module.exports = {
              */
             app.use(function(err, req, res, next) {
                 res.status(err.status || 500);
-                res.render('error', {
+                res.send({
                     message: err.message,
                     error: err
                 });
