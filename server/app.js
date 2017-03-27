@@ -41,6 +41,8 @@ module.exports = {
 
             app.use('/auth', require('./routes/auth'));
 
+
+
             /**
              * Validate session when QPS asks for it.
              * Client > Server > Server posts session to QPS > QPS calls back verifying sesssion > Return true
@@ -57,7 +59,9 @@ module.exports = {
                 });
             });
 
-
+            app.get('/loadscript', function(req, res) {
+                res.sendFile( path.resolve(__dirname, './sensedata/rest-loadscript.txt'));
+            });
 
             /**
              * Error Handler
@@ -83,7 +87,7 @@ module.exports = {
                 app.listen(config.port);
             }
 
-            console.log('Server listening on: ' + config.hostname + ':' + config.port)
+            console.log('Server listening on port: ' + config.port)
 
         });
     }

@@ -1,14 +1,6 @@
 'use strict';
 
-require.config( {
-    baseUrl: "http://ukwin-aor-w10.qliktech.com/ondemand/resources"
-} );
-
 require( ["js/qlik"], function ( qlik ) {
-
-    function getSessionApp ( config ) {
-        return qlik.sessionAppFromApp("engineData", config);
-    }
 
     angular.module('sessApp').controller('DashboardCtrl', [ '$scope', '$http', '$timeout','AuthService',
         function($scope, $http, $timeout, AuthService) {
@@ -23,6 +15,7 @@ require( ["js/qlik"], function ( qlik ) {
 
         $scope.create = function(){
             $scope.creatingProm = $http.get('/user/create/'+AuthService.getLoginUser().id).then(function(res){
+
                 var config = {
                     host: res.data.config.host,
                     prefix: res.data.config.prefix,
@@ -31,7 +24,7 @@ require( ["js/qlik"], function ( qlik ) {
                     isSecure: res.data.config.isSecure
                 };
 
-                var sessionApp = getSessionApp(config);
+                var sessionApp = qlik.sessionAppFromApp("engineData", config);
 
                 sessionApp.getObject("CurrentSelections", "CurrentSelections");
 

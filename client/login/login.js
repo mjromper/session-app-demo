@@ -40,7 +40,7 @@ angular.module('sessApp').controller('LoginCtrl', ['$scope', '$state', 'AuthServ
 		dir: 'ONDEMAND'
 	};
 
-	$scope.someUsers = ['20036919', '50013849', '50295945', '20128051', '20078041'];
+	$scope.someUsers = ['20036919', '50013849', '50295945', '20128051', '20078041', '50310518', '50156338', '50025944'];
 
 
 	$scope.doLogin = function(){

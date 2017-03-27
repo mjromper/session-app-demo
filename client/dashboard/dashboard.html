@@ -1,4 +1,22 @@
-<h2>Hello {{user.name}} <button ng-click="create();" class="btn btn-primary btn-sm">Create Session App <i class="fa fa-check" aria-hidden="true"></i></button></h2>
+<div class="jumbotron" style="background: #ffffff;">
+    <h1>Hello {{user.name}}<small> ({{user.id}})</small></h1>
+    <p>This demo shows the creation of a session app only using code. Meaning that, there is neither a template app nor physical/real app created at any point. A session app is created <b>in memory</b> only for YOU ({{user.name}}) while your session, as a logged-in user, is active. No one else can see this app, it's an in-memory flash-app!</p>
+
+    <h3>What is really going on when you click on "Create Session App"</h3>
+    <ul style="padding-left: 50px;">
+        <li>An empty session app is created in memory and attached to your session</li>
+        <li>A REST connector is created for you. This connection will grab the data corresponding to the logged-in user.</li>
+        <li>The session app will use this connection.</li>
+        <li>An load script is set to this session app. (see load script <a href="/loadscript" target="blank">here</a>)</li>
+        <li>A Reload is triggered so the app loads the data using the load script and the connection.</li>
+        <li>When the data is loaded, the load script is cleared and the connection removed.</li>
+        <li>These all happend <b>server side</b> :-) </li>
+        <li>Finally, the client (this web) opens the session app (since both the server and client <b>share the session!!</b>) and render some on-the-fly charts.</li>
+        <li>Isn't it awesome!!</li>
+    </ul>
+</div>
+
+<h2><button ng-click="create();" class="btn btn-primary btn-sm">Create Session App <i class="fa fa-check" aria-hidden="true"></i></button></h2>
 
 
 <div id="filters"></div>
@@ -7,7 +25,7 @@
 <div cg-busy="{promise:creatingProm,message:'Wait, creating...'}"></div>
 
 <div ng-if="sessionApp" id="visualizations">
-    <h3>These are your stats</h3>
+    <h3>This is your Session APP!</h3>
 
 
     <div class="row">
