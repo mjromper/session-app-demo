@@ -3,13 +3,13 @@ var request = require('request-promise');
 var config = require('../../../config');
 var cache = require('memory-cache');
 
-module.exports = function(user) {
+module.exports = function( user ) {
 
-    /*cache.put(user, JSON.stringify({
+    cache.put(user, JSON.stringify({
         "UserDirectory": "OnDemand",
         "UserId": user,
         "Attributes": []
-    }));*/
+    }));
 
     return request.post({
         url: `https://${config.senseHost}:4243/qps/${config.prefix}/ticket?xrfkey=abcdefghijklmnop`,
@@ -26,4 +26,4 @@ module.exports = function(user) {
             "Attributes": []
         })
     });
-}
+};
