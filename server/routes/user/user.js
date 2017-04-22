@@ -14,6 +14,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/create/:userid', function(req, res, next) {
 
+    console.log("creating session app");
     var sessionId = req.cookies[config.cookieName];
     console.log("session", sessionId);
     console.log("userId", req.params.userid);
@@ -32,7 +33,8 @@ router.get('/create/:userid', function(req, res, next) {
                 prefix: "/"+config.prefix+"/"
             },
             user: USER_LIST.filter(function(d) { return d.id === req.params.userid; }),
-            objectid: ['dataobject', 'listobject']
+            objectid: ['dataobject', 'listobject'],
+            appId: null
         } );
     })
     .catch( function(err) {
@@ -40,22 +42,16 @@ router.get('/create/:userid', function(req, res, next) {
     });
 });
 
-router.get('/create/:userid/:appid', function(req, res, next) {
+router.get('/createfromapp/:userid', function(req, res, next) {
 
     if ( USER_LIST.map(function(d) { return d.id; }).indexOf(req.params.userid) === -1 ) {
         res.status(403).send('Not a valid user').end();
     };
 
-    var sessionId = generateId();
-
-    postSession( req.params.userid, sessionId )
-    .then( function( response ) {
-        var newSession = JSON.parse(response);
-        console.log("SessionId - > ", newSession.SessionId);
-        return sense.generateSessionAppFromApp( newSession.SessionId, req.params.appid, req.params.userid );
-    }).then( function( result )  {
+    var sessionId = req.cookies[config.cookieName],
+        appTemplateId = config.template;
+    sense.generateSessionAppFromApp( sessionId, appTemplateId, req.params.userid ).then( function( result )  {
         console.log("generateSessionAppFromApp", result);
-        res.cookie(config.cookieName, sessionId, { expires: 0, httpOnly: true, path: '/' });
         //console.log('closing underlying session');
         //result.qix.global.session.close();
         res.json( {
@@ -66,7 +62,8 @@ router.get('/create/:userid/:appid', function(req, res, next) {
                 prefix: "/"+config.prefix+"/"
             },
             user: USER_LIST.filter(function(d) { return  d.id === req.params.userid; }),
-            objectid: ['ueeqaKY']
+            objectid: ['ueeqaKY'],
+            appId: appTemplateId
         } );
     });
 

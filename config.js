@@ -8,7 +8,7 @@ var config = {
      * NodeJS Server config
      */
     port: 3000, // Web GUI port
-    useHTTPS: false, // Use HTTP or HTTPs Server
+    useHTTPS: true, // Use HTTP or HTTPs Server
 
     hostfile: 'C:/ProgramData/Qlik/Sense/Host.cfg',
 
@@ -23,14 +23,17 @@ var config = {
     /**
      * Sense Server config
      */
-    senseHost: 'ukwin-aor-w10.qliktech.com',
+    senseHost: 'ukwin-aor-w10',
     prefix: 'ondemand',
-    isSecure: false,
-    appname: '3ff2620d-32ff-4be8-ae9f-4d2ba2f9fd7e',
-
-    template: 'bcc93229-67ef-460e-b3c7-e3a6e3766eda', // Default template GUID
+    isSecure: true,
     cookieName: 'X-Qlik-Session-OnDemand', // Cookie name assigned for virtual proxy
 
+    //Template and data
+    template: '7aa116b6-3923-4c42-9fa2-1be6f298e711', // Default template GUID
+    loadScriptFile: 'loadscript-airbnb.txt',
+    urlFiles: function( userId ) {
+        return `https://dl.dropboxusercontent.com/u/11081420/sessionappsdata/AirBnB/AirbnbWebTraffic-${userId}.csv`
+    },
 };
 
 module.exports = config;

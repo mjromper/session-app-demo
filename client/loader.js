@@ -2,7 +2,7 @@
  * Set Qlik Sense Server configuration
  */
 var SENSE_CONF = {
-    hostname: 'ukwin-aor-w10.qliktech.com', // window.location.hostname, //Modify if SENSE runs on a different machine
+    hostname: 'ukwin-aor-w10', // window.location.hostname, //Modify if SENSE runs on a different machine
     isSecure: true,
     prefix: '/ondemand/' //Virtual proxy
 };

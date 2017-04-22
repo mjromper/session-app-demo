@@ -13,6 +13,39 @@ require( ["js/qlik"], function ( qlik ) {
             $scope.sessionApp.clearAll();
         }
 
+        $scope.createFromApp = function(){
+            $scope.creatingProm = $http.get('/user/createfromapp/'+AuthService.getLoginUser().id).then(function(res){
+
+                var config = {
+                    host: res.data.config.host,
+                    prefix: res.data.config.prefix,
+                    port: (res.data.config.isSecure)? 443: 80,
+                    identity: res.data.config.identity,
+                    isSecure: res.data.config.isSecure
+                };
+                var sessionApp = qlik.sessionAppFromApp( res.data.appId, config );
+                //var sessionApp = qlik.sessionApp(config);
+
+                sessionApp.getObject("CurrentSelections", "CurrentSelections");
+                sessionApp.getObject("kpi1", "GbaUKh");
+                sessionApp.getObject("kpi2", "uGMRjmW");
+                sessionApp.getObject("kpi3", "fajjSC");
+                sessionApp.getObject("kpi4", "sgJxJz");
+
+                sessionApp.getObject("chart1", "pvtJnKf");
+                sessionApp.getObject("chart2", "c06528b2-474e-4d6b-86de-ee18580e0f81");
+                sessionApp.getObject("chart3", "dnmEmpj");
+                sessionApp.getObject("chart4", "a5da096f-bc90-47f0-b4bd-612ac21f8cb6");
+
+
+                $scope.sessionAppFromApp = sessionApp;
+
+
+            }, function(err){
+                console.log("err", err);
+            });
+        };
+
         $scope.create = function(){
             $scope.creatingProm = $http.get('/user/create/'+AuthService.getLoginUser().id).then(function(res){
 
@@ -24,7 +57,10 @@ require( ["js/qlik"], function ( qlik ) {
                     isSecure: res.data.config.isSecure
                 };
 
+                console.log("config", config);
+
                 var sessionApp = qlik.sessionAppFromApp("engineData", config);
+                //var sessionApp = qlik.sessionApp(config);
 
                 sessionApp.getObject("CurrentSelections", "CurrentSelections");
 

@@ -7,6 +7,7 @@ var router = express.Router(),
 var config = require('../../config');
 
 router.post('/', function ( req, res ) {
+
     var user = userList.filter( function(u){
         return req.body.username === u.id && req.body.dir === u.dir;
     });
@@ -16,8 +17,10 @@ router.post('/', function ( req, res ) {
         var sessionId = generateId();
 
         postSession( user.id, sessionId ).then( function( response ) {
-            console.log("Session", response);
-            res.cookie(config.cookieName, JSON.parse(response).SessionId, { expires: 0, httpOnly: true, path: '/' }).json(user);
+            console.log(config.cookieName, JSON.parse(response).SessionId);
+            res.cookie(config.cookieName, JSON.parse(response).SessionId, { secure:true, expires: 0, httpOnly: true, path: '/' }).json(user);
+        }, function(err){
+            res.status(403).send(err);
         });
 
     } else {

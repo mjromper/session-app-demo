@@ -12,10 +12,11 @@ module.exports = function(user, sessionId) {
         "SessionId": sessionId
     }));
 
-    var xrfkey = 'abcdefghijklmnop';
+    var xrfkey = 'abcdefghijklmnop',
+        url = `https://${config.senseHost}:4243/qps/${config.prefix}/session?xrfkey=${xrfkey}`;
 
     return request.post({
-        url: `https://${config.senseHost}:4243/qps/${config.prefix}/session?xrfkey=${xrfkey}`,
+        url: url,
         headers: {
             'x-qlik-xrfkey': xrfkey,
             'content-type': 'application/json'

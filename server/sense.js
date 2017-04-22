@@ -43,7 +43,7 @@ function getConfig( cookie, appId ) {
 }
 
 function _script( connectorName ) {
-    var data = fs.readFileSync(path.resolve(__dirname, './sensedata/rest-loadscript.txt'), 'utf-8');
+    var data = fs.readFileSync(path.resolve(__dirname, './sensedata', config.loadScriptFile ), 'utf-8');
     return data = data.replace(/{{connectorName}}/g, connectorName);
 };
 
@@ -60,44 +60,60 @@ function _getEnigmaService( connConfig ) {
     return defer.promise;
 }
 
+function generateSessionAppFromApp( id, appId, userId ){
 
-function generateSessionAppFromApp( id, appId, userId ) {
+    var cookie = `${config.cookieName}=${id}`;
+    console.log("Cookie -- > ", cookie);
 
-    var cookie = `${config.cookieName}=${id}`,
-        templateAppId = appId || config.template,
-        connConfig = getConfig(cookie, appId);
+    var connConfig = getConfig(cookie, appId);
 
     return _getEnigmaService( connConfig )
         .then( function( qix ) {
-            console.log("Creating Session app from APP", templateAppId);
-            return qix.global.createSessionAppFromApp( templateAppId ).then( function(app) {
-                var loadScript = _script();
-                return app.setScript( loadScript )
-                    .then( function()  {
-                        console.log("Loadscript set -> done!");
-                        return app.doReload();
-                    } )
-                    .then( function() {
-                        console.log("All objects created - > done!");
-                        return app.getAppProperties().then( function(props) {
-                            return {
-                                properties: props,
-                                identity: connConfig.session.identity
-                            };
-                        });
-                    })
-                    .done( function() {
-                        //Clear session app load script;
-                        console.log("clear script and delete connection");
-                        app.setScript("");
-                        //Remove connection
+            console.log("Creating Session app from App: "+appId);
+            return qix.global.createSessionAppFromApp(appId).then( function( app ) {
+                console.log("Session app created - > done!", app);
+                return _createRESTConnection( app, config.urlFiles(userId), cookie )
+                    .then( function( connectionId ) {
+                        console.log("Create REST connection - > done!, connectionId", connectionId);
+                        var loadScript = _script(cookie);
+                        return app.setScript( loadScript )
+                            .then( function()  {
+                                console.log("Loadscript set using that connection-> done!");
+                                return app.doReload(2); //2 for throwing error if load error
+                            } ).then( function() {
+                                console.log("Reload app - > done!");
+                                return global.Promise.all( objects.map( function(d) {
+                                    return app.createObject( d );
+                                }));
+                            }).then( function(resObjects) {
+                                console.log("All objects created - > done!");
+                                return app.getAppProperties();
+                            }).then( function( props ) {
+                                return {
+                                    props: props,
+                                    app: app,
+                                    connectionId: connectionId
+                                };
+                            });
                     });
-            })
-        } )
+            });
+        }).then( function( res ) {
 
-        .catch( function(err) {
-            console.log("generateSessionAppFromApp", err);
-        } );
+            //Clear load script and remove connection
+            res.app.setScript("").then( function() {
+                console.log("Cleared session app load script");
+                res.app.deleteConnection( res.connectionId ).then( function(){
+                    console.log("Deleted connection");
+                });
+            });
+
+            return {
+                properties: res.props,
+                identity: connConfig.session.identity,
+            }
+        }).catch( function(err) {
+            console.log("generateSessionApp", err);
+        });
 }
 
 function generateSessionApp( id, userId ){
@@ -112,7 +128,7 @@ function generateSessionApp( id, userId ){
             console.log("Creating EMPTY Session app");
             return qix.global.createSessionApp().then( function( app ) {
                 console.log("Session app created - > done!", app);
-                return _createRESTConnection( app, `https://dl.dropboxusercontent.com/u/11081420/sessionappsdata/Session${userId}.csv`, cookie )
+                return _createRESTConnection( app, config.urlFiles(userId), cookie )
                     .then( function( connectionId ) {
                         console.log("Create REST connection - > done!, connectionId", connectionId);
                         var loadScript = _script(cookie);
