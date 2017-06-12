@@ -49,3 +49,10 @@ body {
 .cg-busy-default-spinner {
     left: 18px;
 }
+
+.mycol {
+  padding: 5px;
+}
+.mycolkpi {
+  padding: 0px;
+}

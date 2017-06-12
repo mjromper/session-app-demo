@@ -1,0 +1,17 @@
+BINARY [lib://QlikBanco (ukwin-aor-w10_aor)/QlikBanco.qvf];
+
+tempinline2:
+right keep (DIM_OFICINAS)
+load * Inline
+[COD_CENTRO,
+{{cod_centro}}];
+
+drop table tempinline2;
+
+tempinline1:
+right keep (Indicadores)
+load * Inline
+[COD_CENTRO,
+{{cod_centro}}];
+
+drop table tempinline1;

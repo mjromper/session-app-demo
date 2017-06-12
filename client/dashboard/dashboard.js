@@ -24,9 +24,9 @@ require( ["js/qlik"], function ( qlik ) {
                     isSecure: res.data.config.isSecure
                 };
                 var sessionApp = qlik.sessionAppFromApp( res.data.appId, config );
-                //var sessionApp = qlik.sessionApp(config);
 
-                sessionApp.getObject("CurrentSelections", "CurrentSelections");
+                //AirBnB
+                /*sessionApp.getObject("CurrentSelections", "CurrentSelections");
                 sessionApp.getObject("kpi1", "GbaUKh");
                 sessionApp.getObject("kpi2", "uGMRjmW");
                 sessionApp.getObject("kpi3", "fajjSC");
@@ -35,7 +35,37 @@ require( ["js/qlik"], function ( qlik ) {
                 sessionApp.getObject("chart1", "pvtJnKf");
                 sessionApp.getObject("chart2", "c06528b2-474e-4d6b-86de-ee18580e0f81");
                 sessionApp.getObject("chart3", "dnmEmpj");
-                sessionApp.getObject("chart4", "a5da096f-bc90-47f0-b4bd-612ac21f8cb6");
+                sessionApp.getObject("chart4", "a5da096f-bc90-47f0-b4bd-612ac21f8cb6");*/
+
+                // BANK
+                sessionApp.getObject("CurrentSelections", "CurrentSelections");
+                sessionApp.getObject("kpi1", "LfPLcuc");
+                sessionApp.getObject("kpi2", "ayvvjD");
+                sessionApp.getObject("kpi3", "d542c53d-bc66-47cc-8a6b-eb9f44fc5cdd");
+                sessionApp.getObject("kpi4", "xHWzHz")
+                /*;
+                */
+
+                sessionApp.getObject("evolucionClientes", "PHWY");
+                sessionApp.getObject("clientesSexo", "Pqzmh");
+
+                sessionApp.getObject("tableClientes", "QxVXV");
+                sessionApp.getObject("clientesSitLaboral","eSPGpYz");
+                sessionApp.getObject("clientesEstadoCivil", "VsqqFH");
+                sessionApp.getObject("clientesCanalContratacion", "BJMKDTm");
+                /*sessionApp.getObject("chart4", "a5da096f-bc90-47f0-b4bd-612ac21f8cb6");*/
+
+
+                //Client
+
+                sessionApp.getObject("datosCliente", "JSMUKTT");
+                sessionApp.getObject("clientePosicionActualKpi", "cAEtj");
+                sessionApp.getObject("clienteSaldoMedioKpi", "VcQP");
+
+                sessionApp.getObject("tablaCliente", "48540a5f-f347-4781-a199-9ccc207bf976");
+                sessionApp.getObject("evolucionCliente", "YgFE");
+
+
 
 
                 $scope.sessionAppFromApp = sessionApp;

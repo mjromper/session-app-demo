@@ -1,4 +1,4 @@
-<div class="jumbotron" style="background: #ffffff;">
+<div ng-if="textHide" class="jumbotron" style="background: #ffffff;">
     <h1>Hello {{user.name}}<small> ({{user.id}})</small></h1>
     <p>This demo shows the creation of a session app only using code. Meaning that, there is neither a template app nor physical/real app created at any point. A session app is created <b>in memory</b> only for YOU ({{user.name}}) while your session, as a logged-in user, is active. No one else can see this app, it's an in-memory flash-app!</p>
 
@@ -15,8 +15,11 @@
         <li>Isn't it awesome!!</li>
     </ul>
 </div>
-
-<h2><button ng-click="create();" class="btn btn-primary btn-sm">Create Session App <i class="fa fa-check" aria-hidden="true"></i></button> <button ng-click="createFromApp();" class="btn btn-primary btn-sm">Create Session App From Template<i class="fa fa-check" aria-hidden="true"></i></button></h2>
+<h1>Hello {{user.name}}</h1>
+<h2>
+<!--<button ng-click="create();" class="btn btn-primary btn-sm">Create Session App <i class="fa fa-check" aria-hidden="true"></i></button> -->
+<button ng-click="createFromApp();" class="btn btn-primary btn-sm">Create Session App From Template<i class="fa fa-check" aria-hidden="true"></i></button>
+</h2>
 
 
 <div id="filters"></div>
@@ -25,44 +28,74 @@
 <div cg-busy="{promise:creatingProm,message:'Wait, creating...'}"></div>
 
 <div ng-if="sessionAppFromApp" id="visualizations">
-    <h3>This is your Session APP!</h3>
+    <h3>This is your Qlik Sense Session App. <small>Look at the story living in your data</small></h3>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mycol">
            <div id="CurrentSelections" style="width: 100%; height: 50px;"></div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-3">
-           <div id="kpi1" style="width: 100%; height: 150px;" class="mychart"></div>
+    <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-3 mycolkpi">
+           <div id="kpi1" style="width: 100%; height: 120px;" class="mychart"></div>
         </div>
-        <div class="col-md-3">
-            <div id="kpi2" style="width: 100%; height: 150px;" class="mychart"></div>
+        <div class="col-md-3 mycolkpi">
+            <div id="kpi2" style="width: 100%; height: 120px;" class="mychart"></div>
         </div>
-        <div class="col-md-3">
-            <div id="kpi3" style="width: 100%; height: 150px;" class="mychart"></div>
+        <div class="col-md-3 mycolkpi">
+            <div id="kpi3" style="width: 100%; height: 120px;" class="mychart"></div>
         </div>
-         <div class="col-md-3">
-            <div id="kpi4" style="width: 100%; height: 150px;" class="mychart"></div>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-6">
-            <div id="chart1" style="width: 100%; height: 350px;" class="mychart"></div>
-        </div>
-        <div class="col-md-6">
-            <div id="chart2" style="width: 100%; height: 350px;" class="mychart"></div>
+         <div class="col-md-3 mycolkpi">
+            <div id="kpi4" style="width: 100%; height: 120px;" class="mychart"></div>
         </div>
     </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-6">
-            <div id="chart3" style="width: 100%; height: 500px;" class="mychart"></div>
+    <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-6 mycol">
+            <div id="evolucionClientes" style="width: 100%; height: 250px;" class="mychart"></div>
         </div>
-        <div class="col-md-6">
-            <div id="chart4" style="width: 100%; height: 500px;" class="mychart"></div>
+        <div class="col-md-6 mycol">
+            <div id="clientesSexo" style="width: 100%; height: 250px;" class="mychart"></div>
+        </div>
+    </div>
+    <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-6 mycol">
+            <div id="clientesSitLaboral" style="width: 100%; height: 250px;" class="mychart"></div>
+        </div>
+        <div class="col-md-6 mycol">
+            <div id="clientesEstadoCivil" style="width: 100%; height: 250px;" class="mychart"></div>
+        </div>
+        <div class="col-md-12 mycol">
+             <div id="clientesCanalContratacion" style="width: 100%; height: 200px;" class="mychart"></div>
+        </div>
+    </div>
+    <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-12 mycol">
+            <div id="tableClientes" style="width: 100%; height: 350px;" class="mychart"></div>
+        </div>
+    </div>
+
+
+    <!-- Cliente-->
+
+    <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-12 mycol">
+            <div id="datosCliente" style="width: 100%; height: 180px;" class="mychart"></div>
+        </div>
+    </div>
+    <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-4 mycol">
+            <div id="clientePosicionActualKpi" style="width: 100%; height: 150px;" class="mychart"></div>
+            <div id="clienteSaldoMedioKpi" style="width: 100%; height: 150px;" class="mychart"></div>
+        </div>
+        <div class="col-md-8 mycol">
+            <div id="tablaCliente" style="width: 100%; height: 300px;" class="mychart"></div>
+        </div>
+
+    </div>
+    <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-12 mycol">
+            <div id="evolucionCliente" style="width: 100%; height: 350px;" class="mychart"></div>
         </div>
     </div>
 </div>

@@ -29,11 +29,11 @@ var config = {
     cookieName: 'X-Qlik-Session-OnDemand', // Cookie name assigned for virtual proxy
 
     //Template and data
-    template: '7aa116b6-3923-4c42-9fa2-1be6f298e711', // Default template GUID
-    loadScriptFile: 'loadscript-airbnb.txt',
+    template: '1356ed9a-d640-418b-8098-1f0753139585', // Default template GUID
+    loadScriptFile: 'loadscript-qlikbank.txt',// 'loadscript-airbnb.txt',
     urlFiles: function( userId ) {
         return `https://dl.dropboxusercontent.com/u/11081420/sessionappsdata/AirBnB/AirbnbWebTraffic-${userId}.csv`
-    },
+    }
 };
 
 module.exports = config;

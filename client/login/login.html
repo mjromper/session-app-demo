@@ -1,16 +1,16 @@
 <div style="width: 600px; margin: 0 auto;">
-    <h2 class="form-signin-heading text-center">Please sign in</h2>
+    <h2 class="form-signin-heading text-center">Accede</h2>
     <div class="row" style="padding-top: 30px;">
 
     	<div class="col-md-6">
     		<div style="width: 100%" class="form-signin">
-		        <label for="userid">Username</label>
+		        <label for="userid">Usuario</label>
 		        <input ng-model="user.username" name="userid" value="20036919" type="text" id="userid" class="form-control" placeholder="Enter username" required="" autofocus="">
 		        <br />
-		        <label for="directory">Directory</label>
+		        <label for="directory">Directorio</label>
 		        <input ng-model="user.dir" type="text" readonly value="ONDEMAND" name="directory" id="directory" class="form-control" placeholder="Enter group" required="">
 		        <br />
-		        <button ng-click="doLogin();" class="btn btn-lg btn-primary btn-block" type="button">Login <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+		        <button ng-click="doLogin();" class="btn btn-lg btn-primary btn-block" type="button">Entrar <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
 		        <div cg-busy="{promise:loginProm,message:'Wait...'}"></div>
 		    </div>
     	</div>

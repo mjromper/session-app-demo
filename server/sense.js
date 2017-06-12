@@ -47,6 +47,22 @@ function _script( connectorName ) {
     return data = data.replace(/{{connectorName}}/g, connectorName);
 };
 
+function _scriptBank( userId ) {
+    var cod_centro = {
+        "20036919": 845,
+        "50013849": 837,
+        "50295945": 603,
+        "20128051": 5597,
+        "20078041": 293,
+        "50310518": 754,
+        "50156338": 5856,
+        "50025944": 261
+    }
+    console.log("cod_centro", cod_centro[userId]);
+    var data = fs.readFileSync(path.resolve(__dirname, './sensedata', config.loadScriptFile ), 'utf-8');
+    return data = data.replace(/{{cod_centro}}/g, cod_centro[userId]);
+};
+
 function _getEnigmaService( connConfig ) {
     var defer = Q.defer();
     enigma.getService( "qix", connConfig ).then( function(qix) {
@@ -75,18 +91,19 @@ function generateSessionAppFromApp( id, appId, userId ){
                 return _createRESTConnection( app, config.urlFiles(userId), cookie )
                     .then( function( connectionId ) {
                         console.log("Create REST connection - > done!, connectionId", connectionId);
-                        var loadScript = _script(cookie);
+                        //var loadScript = _script(cookie);
+                        var loadScript = _scriptBank(userId);
                         return app.setScript( loadScript )
                             .then( function()  {
                                 console.log("Loadscript set using that connection-> done!");
                                 return app.doReload(2); //2 for throwing error if load error
-                            } ).then( function() {
+                            } )/*.then( function() {
                                 console.log("Reload app - > done!");
                                 return global.Promise.all( objects.map( function(d) {
                                     return app.createObject( d );
                                 }));
-                            }).then( function(resObjects) {
-                                console.log("All objects created - > done!");
+                            })*/.then( function(resObjects) {
+                                //console.log("All objects created - > done!");
                                 return app.getAppProperties();
                             }).then( function( props ) {
                                 return {
